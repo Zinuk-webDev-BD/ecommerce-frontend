@@ -1,14 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 export default function ProductDetail({ id }) {
+  const router = useRouter();
+  const { user } = useAuth();
+  const { addToCart } = useCart();
+
   const [product, setProduct] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
+  const [cartMessage, setCartMessage] = useState("");
+  const [cartError, setCartError] = useState("");
+  const [adding, setAdding] = useState(false);
 
   // load this product from the backend
   useEffect(() => {
@@ -16,6 +27,26 @@ export default function ProductDetail({ id }) {
       .then((data) => setProduct(data.product))
       .catch((err) => setError(err.message));
   }, [id]);
+
+  const handleAdd = async () => {
+    // only logged in users have a cart
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    setCartMessage("");
+    setCartError("");
+    setAdding(true);
+    try {
+      await addToCart(product._id, quantity);
+      setCartMessage("Added to cart");
+    } catch (err) {
+      setCartError(err.message);
+    } finally {
+      setAdding(false);
+    }
+  };
 
   if (error) {
     return (
@@ -83,6 +114,43 @@ export default function ProductDetail({ id }) {
             )}
           </p>
           <p className="mt-4 text-gray-700">{product.description || "No description."}</p>
+
+          {/* add to cart */}
+          {product.stock > 0 && (
+            <div className="mt-6">
+              <div className="flex items-center gap-3">
+                <label className="text-sm">Quantity</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={product.stock}
+                  value={quantity}
+                  onChange={(e) => setQuantity(Math.max(1, Number(e.target.value) || 1))}
+                  className="w-20 rounded border p-2"
+                />
+                <button
+                  onClick={handleAdd}
+                  disabled={adding}
+                  className="rounded bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
+                >
+                  {adding ? "Adding..." : "Add to cart"}
+                </button>
+              </div>
+
+              {cartMessage && (
+                <p className="mt-2 text-sm text-green-600">
+                  {cartMessage}.{" "}
+                  <Link href="/cart" className="underline">
+                    View cart
+                  </Link>
+                </p>
+              )}
+              {cartError && <p className="mt-2 text-sm text-red-600">{cartError}</p>}
+              {!user && (
+                <p className="mt-2 text-sm text-gray-500">Please login to add items to your cart.</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </main>

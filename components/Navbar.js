@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
+  const { cart } = useCart();
 
   return (
     <nav className="flex items-center justify-between border-b px-6 py-3">
@@ -16,6 +18,9 @@ export default function Navbar() {
         {/* nothing shown until we know if the user is logged in */}
         {!loading && user && (
           <>
+            <Link href="/cart" className="hover:underline">
+              Cart ({cart.totalItems})
+            </Link>
             <span className="text-sm text-gray-600">Hi, {user.name}</span>
             <button onClick={logout} className="rounded bg-gray-800 px-3 py-1 text-white">
               Logout
