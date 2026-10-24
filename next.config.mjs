@@ -1,15 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
+  images: {
+    // allow images that come from cloudinary
+    remotePatterns: [{ protocol: "https", hostname: "res.cloudinary.com" }],
   },
 };
 
