@@ -18,6 +18,11 @@ export default function Navbar() {
         {/* nothing shown until we know if the user is logged in */}
         {!loading && user && (
           <>
+            {user.role === "admin" && (
+              <Link href="/admin" className="font-semibold text-purple-700 hover:underline">
+                Admin
+              </Link>
+            )}
             <Link href="/orders" className="hover:underline">
               Orders
             </Link>
