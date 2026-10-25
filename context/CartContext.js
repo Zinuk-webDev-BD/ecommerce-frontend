@@ -27,6 +27,13 @@ export function CartProvider({ children }) {
       .finally(() => setLoading(false));
   }, [token]);
 
+  // load the cart again (used after an order, because the backend empties it)
+  const refreshCart = async () => {
+    if (!token) return;
+    const data = await api("/cart", { token });
+    setCart(data.cart);
+  };
+
   // every cart api returns the new cart, so we just save it
   const addToCart = async (productId, quantity = 1) => {
     const data = await api("/cart", { method: "POST", body: { productId, quantity }, token });
@@ -49,7 +56,9 @@ export function CartProvider({ children }) {
   };
 
   return (
-    <CartContext.Provider value={{ cart, loading, addToCart, updateItem, removeItem, clearCart }}>
+    <CartContext.Provider
+      value={{ cart, loading, refreshCart, addToCart, updateItem, removeItem, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -127,7 +127,14 @@ export default function CartPage() {
         <p className="text-xl font-bold">Total: {cart.totalPrice} BDT</p>
       </div>
 
-      {/* checkout button comes in the next step */}
+            <div className="mt-4 text-right">
+        <Link
+          href="/checkout"
+          className="inline-block rounded bg-green-600 px-5 py-2 text-white"
+        >
+          Proceed to checkout
+        </Link>
+      </div>
     </main>
   );
 }

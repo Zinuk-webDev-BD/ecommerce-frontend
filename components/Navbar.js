@@ -18,6 +18,9 @@ export default function Navbar() {
         {/* nothing shown until we know if the user is logged in */}
         {!loading && user && (
           <>
+            <Link href="/orders" className="hover:underline">
+              Orders
+            </Link>
             <Link href="/cart" className="hover:underline">
               Cart ({cart.totalItems})
             </Link>
