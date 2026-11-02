@@ -1,5 +1,6 @@
 "use client";
 
+import ProductReviews from "@/components/ProductReviews";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -153,6 +154,7 @@ export default function ProductDetail({ id }) {
           )}
         </div>
       </div>
+            <ProductReviews productId={product._id} />
     </main>
   );
 }

@@ -1,3 +1,4 @@
+import StarRating from "@/components/StarRating";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -29,6 +30,12 @@ export default function ProductCard({ product }) {
       <div className="p-3">
         <h3 className="truncate font-semibold">{product.name}</h3>
         <p className="text-sm text-gray-500">{product.category?.name}</p>
+                {product.ratingCount > 0 && (
+          <div className="flex items-center gap-1 text-xs text-gray-500">
+            <StarRating value={product.ratingAverage} size="text-sm" />
+            ({product.ratingCount})
+          </div>
+        )}
         <div className="mt-1 flex items-center justify-between">
           <span className="font-bold">{product.price} BDT</span>
           {product.stock > 0 ? (
