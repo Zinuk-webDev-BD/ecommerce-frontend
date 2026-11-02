@@ -29,6 +29,9 @@ export default function Navbar() {
             <Link href="/cart" className="hover:underline">
               Cart ({cart.totalItems})
             </Link>
+                        <Link href="/change-password" className="hover:underline">
+              Change password
+            </Link>
             <span className="text-sm text-gray-600">Hi, {user.name}</span>
             <button onClick={logout} className="rounded bg-gray-800 px-3 py-1 text-white">
               Logout

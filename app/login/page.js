@@ -56,6 +56,9 @@ export default function LoginPage() {
             Verify your email now
           </Link>
         )}
+                <Link href="/forgot-password" className="block text-sm text-blue-600 underline">
+          Forgot password?
+        </Link>
         <button
           disabled={loading}
           className="w-full rounded bg-blue-600 p-2 text-white disabled:opacity-50"
